@@ -31,6 +31,59 @@ public class MortgageTest {
 
     }
 
+    @Test
+    void testQualifiedCandidate(){
+        //SEAT
+        //SETUP
+        int dti = 21;
+        double credit_score = 700;
+        double savings = 100000;
+        double loanRequestAmount = 250000;
+        //Execution
+        Candidate candidate = new Candidate(dti, credit_score, savings);
+        //Assertion
+        assertEquals(true,candidate.isQualified(loanRequestAmount));
+        //termination
+    }
+
+    @Test
+    void testLoanStatus(){
+        //SEAT
+        //SETUP
+        Lender lender = new Lender();
+
+        lender.depositFunds(50000);
+        double offerSentAmount = 100000;
+        Loan loan = new Loan(offerSentAmount);
+        String nonLoanStatus = "not Pending";
+        String pendingStatus = "pending";
+        lender.offerSent(loan);
+        assertEquals(nonLoanStatus,loan.getPendingStatus());
+
+    }
+
+    @Test
+    public void testUpdatePendingLoanStatus(){
+
+        //SEAT
+        //SETUP
+        Lender lender = new Lender();
+        lender.depositFunds(50000);
+        double offerSentAmount = 100000;
+        Loan loan = new Loan(offerSentAmount);
+        //EXECUTION
+        Candidate candidate = new Candidate();
+        candidate.isQualified(offerSentAmount);
+        boolean accepted = candidate.acceptOffer(loan);
+        lender.processOffer(accepted);
+        //ASSERTION
+        assertEquals("accepted",loan.setStatus());
+
+    }
+
+
+
+
 
 
 }
